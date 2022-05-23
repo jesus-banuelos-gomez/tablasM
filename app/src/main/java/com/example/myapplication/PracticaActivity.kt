@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -18,6 +19,8 @@ class PracticaActivity : AppCompatActivity() {
     var factor2:Int = 0
     var producto:Int = 0
 
+    var respuestaCorrecta = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_practica)
@@ -29,17 +32,15 @@ class PracticaActivity : AppCompatActivity() {
             if (strRespuesta.equals("")){
                 Toast.makeText(this,"Dejaste el campo vacio",Toast.LENGTH_LONG).show()
             }else{
+                respuestaCorrecta = producto == strRespuesta.toInt()
+                val mostrarResultados =  Intent(this,ResultadoActivity::class.java)
+                mostrarResultados.putExtra("respuesta",respuestaCorrecta)
+                startActivity(mostrarResultados)
 
+                generaMultiplicacion()
             }
 
         }
-
-
-
-
-
-
-
     }
     fun initUI(){
 
@@ -48,8 +49,7 @@ class PracticaActivity : AppCompatActivity() {
         etRespuesta = findViewById(R.id.etRespuesta)
         btnVerificar = findViewById(R.id.btnVerificar)
         generaMultiplicacion()
-        tvFactor1.text = "$factor1"
-        tvFactor2.text = "$factor2"
+
 
 
     }
@@ -57,9 +57,10 @@ class PracticaActivity : AppCompatActivity() {
     fun generaMultiplicacion(){
         factor1 = Random.nextInt(0,10)
         factor2 = Random.nextInt(0,10)
-
         producto = factor1 * factor2
-
+        tvFactor1.text = "$factor1"
+        tvFactor2.text = "$factor2"
+        etRespuesta.text.clear()
 
     }
 }
